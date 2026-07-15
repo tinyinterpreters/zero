@@ -1,0 +1,8 @@
+Program ::= Expr
+Expr    ::= Const
+          | Diff
+Const   ::= Number
+Diff    ::= '-' '(' Expr ',' Expr ')'
+Number  ::= [0-9]+
+
+/* Use https://www.bottlecaps.de/rr/ui to view it as a Railroad Diagram. */
