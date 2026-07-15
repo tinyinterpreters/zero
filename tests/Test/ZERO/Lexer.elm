@@ -1,14 +1,14 @@
-module Test.DIFF.Lexer exposing (suite)
+module Test.ZERO.Lexer exposing (suite)
 
-import DIFF.Lexer as L
 import Parser as P exposing (Parser)
 import Test exposing (Test, describe)
 import Test.Lib exposing (testValue)
+import ZERO.Lexer as L
 
 
 suite : Test
 suite =
-    describe "DIFF.Lexer"
+    describe "ZERO.Lexer"
         [ describe "digits" <|
             List.map (testValue <| P.run L.digits)
                 [ ( "123", Just 123 )

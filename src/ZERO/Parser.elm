@@ -1,8 +1,8 @@
-module DIFF.Parser exposing (Error, parse)
+module ZERO.Parser exposing (Error, parse)
 
-import DIFF.AST as AST exposing (..)
-import DIFF.Lexer as L
 import Parser as P exposing ((|.), (|=), Parser)
+import ZERO.AST as AST exposing (..)
+import ZERO.Lexer as L
 
 
 type alias Error =

@@ -1,13 +1,13 @@
-module Test.DIFF.Interpreter exposing (suite)
+module Test.ZERO.Interpreter exposing (suite)
 
-import DIFF.Interpreter as I exposing (Value(..))
 import Test exposing (Test, describe)
 import Test.Lib exposing (testValue)
+import ZERO.Interpreter as I exposing (Value(..))
 
 
 suite : Test
 suite =
-    describe "DIFF.Interpreter"
+    describe "ZERO.Interpreter"
         [ describe "run" <|
             List.map (testValue I.run)
                 -- Constant expressions

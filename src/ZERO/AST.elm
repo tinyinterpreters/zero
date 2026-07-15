@@ -1,4 +1,4 @@
-module DIFF.AST exposing
+module ZERO.AST exposing
     ( Expr(..)
     , Number
     , Program(..)

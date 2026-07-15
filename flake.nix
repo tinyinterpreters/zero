@@ -6,7 +6,7 @@
       in
       {
         devShells.default = pkgs.mkShell {
-          name = "diff";
+          name = "zero";
 
           packages = [
             pkgs.elmPackages.elm

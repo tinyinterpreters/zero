@@ -1,7 +1,7 @@
-module DIFF.Interpreter exposing (Error(..), Value(..), run)
+module ZERO.Interpreter exposing (Error(..), Value(..), run)
 
-import DIFF.AST as AST exposing (..)
-import DIFF.Parser as P
+import ZERO.AST as AST exposing (..)
+import ZERO.Parser as P
 
 
 type Value
