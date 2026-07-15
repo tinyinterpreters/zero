@@ -1,4 +1,4 @@
-module ZERO.Lexer exposing (digits, spaces, symbol)
+module ZERO.Lexer exposing (digits, keyword, spaces, symbol)
 
 import Parser as P exposing ((|.), (|=), Parser)
 
@@ -16,6 +16,11 @@ chompOneOrMore isGood =
     P.succeed ()
         |. P.chompIf isGood
         |. P.chompWhile isGood
+
+
+keyword : String -> Parser ()
+keyword =
+    lexeme << P.keyword
 
 
 symbol : String -> Parser ()

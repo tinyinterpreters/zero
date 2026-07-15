@@ -19,6 +19,7 @@ suite =
                 , ( "onetwothree", Nothing )
                 ]
         , symbolSuite
+        , keywordSuite
         ]
 
 
@@ -50,5 +51,34 @@ symbolSuite =
 
                 -- No leading spaces
                 , ( " -", Nothing )
+                ]
+        ]
+
+
+keywordSuite : Test
+keywordSuite =
+    let
+        keyword : String -> Parser String
+        keyword =
+            L.keyword >> P.getChompedString
+    in
+    describe "keyword"
+        [ describe "zero?" <|
+            List.map (testValue <| P.run <| keyword "zero?")
+                -- Exact match
+                [ ( "zero?", Just "zero?" )
+
+                -- Trailing spaces
+                , ( "zero? ", Just "zero? " )
+                , ( "zero?\n(1)", Just "zero?\n" )
+
+                -- Only the keyword
+                , ( "zero?(1)", Just "zero?" )
+
+                -- No match
+                , ( "zero?th", Nothing )
+
+                -- No leading spaces
+                , ( " zero?", Nothing )
                 ]
         ]
