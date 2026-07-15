@@ -36,6 +36,9 @@ runExpr expr =
         Diff a b ->
             evalDiff (runExpr a) (runExpr b)
 
+        Zero _ ->
+            VNumber 0
+
 
 evalDiff : Value -> Value -> Value
 evalDiff va vb =

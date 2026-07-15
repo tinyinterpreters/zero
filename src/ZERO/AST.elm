@@ -12,6 +12,7 @@ type Program
 type Expr
     = Const Number
     | Diff Expr Expr
+    | Zero Expr
 
 
 type alias Number =
