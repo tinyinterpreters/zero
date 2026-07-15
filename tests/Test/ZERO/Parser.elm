@@ -32,5 +32,18 @@ suite =
                     """
                   , Just (Program (Diff (Diff (Const 5) (Const 3)) (Diff (Const 0) (Const 1))))
                   )
+
+                -- Is it zero?
+                , ( "zero?(0)", Just (Program (Zero (Const 0))) )
+                , ( "zero? ( 0 ) ", Just (Program (Zero (Const 0))) )
+                , ( """
+                    zero?(
+                        -( 0
+                         , 1
+                         )
+                    )
+                    """
+                  , Just (Program (Zero (Diff (Const 0) (Const 1))))
+                  )
                 ]
         ]

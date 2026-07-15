@@ -27,6 +27,7 @@ expr =
     P.oneOf
         [ constExpr
         , diffExpr
+        , zeroExpr
         ]
 
 
@@ -47,5 +48,14 @@ diffExpr =
         |. L.symbol "("
         |= P.lazy (\_ -> expr)
         |. L.symbol ","
+        |= P.lazy (\_ -> expr)
+        |. L.symbol ")"
+
+
+zeroExpr : Parser Expr
+zeroExpr =
+    P.succeed Zero
+        |. L.keyword "zero?"
+        |. L.symbol "("
         |= P.lazy (\_ -> expr)
         |. L.symbol ")"
