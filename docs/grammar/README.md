@@ -13,12 +13,14 @@ Program  ::= Expr
 ```
 Expr     ::= Const
            | Diff
+           | Zero
 ```
 
 referenced by:
 
 * Diff
 * Program
+* Zero
 
 **Const:**
 
@@ -38,6 +40,18 @@ referenced by:
 
 ```
 Diff     ::= '-' '(' Expr ',' Expr ')'
+```
+
+referenced by:
+
+* Expr
+
+**Zero:**
+
+![Zero](diagram/Zero.svg)
+
+```
+Zero     ::= 'zero?' '(' Expr ')'
 ```
 
 referenced by:
