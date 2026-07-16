@@ -8,21 +8,24 @@ testValue : (String -> Result e a) -> ( String, Maybe a ) -> Test
 testValue f ( input, expectedOutput ) =
     test (Debug.toString input) <|
         \_ ->
-            case f input of
-                Ok value ->
-                    if expectedOutput == Just value then
+            case ( f input, expectedOutput ) of
+                ( Ok actual, Just expected ) ->
+                    if actual == expected then
                         Expect.pass
 
                     else
                         Expect.fail <|
                             Debug.toString
-                                { expected = expectedOutput
-                                , actual = value
+                                { expected = expected
+                                , actual = actual
                                 }
 
-                Err e ->
-                    if expectedOutput == Nothing then
-                        Expect.pass
+                ( Err _, Nothing ) ->
+                    Expect.pass
 
-                    else
-                        Expect.fail (Debug.toString e)
+                ( actual, expected ) ->
+                    Expect.fail <|
+                        Debug.toString
+                            { expected = expected
+                            , actual = actual
+                            }
