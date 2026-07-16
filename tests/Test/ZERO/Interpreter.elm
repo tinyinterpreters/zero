@@ -31,5 +31,18 @@ suite =
                     """
                   , Just (VNumber 3)
                   )
+
+                -- Is it zero?
+                , ( "zero?(0)", Just (VBool True) )
+                , ( "zero?( 0 ) ", Just (VBool True) )
+                , ( """
+                    zero?(
+                        -( 0
+                         , 1
+                         )
+                    )
+                    """
+                  , Just (VBool True)
+                  )
                 ]
         ]
