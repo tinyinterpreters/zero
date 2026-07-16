@@ -31,6 +31,9 @@ suite =
                     """
                   , Just (VNumber 3)
                   )
+                , ( "-(zero?(0), 1)", Nothing )
+                , ( "-(0, zero?(1))", Nothing )
+                , ( "-(zero?(0), zero?(1))", Nothing )
 
                 -- Is it zero?
                 , ( "zero?(0)", Just (VBool True) )
@@ -42,7 +45,8 @@ suite =
                          )
                     )
                     """
-                  , Just (VBool True)
+                  , Just (VBool False)
                   )
+                , ( "zero?(zero?(0))", Nothing )
                 ]
         ]
