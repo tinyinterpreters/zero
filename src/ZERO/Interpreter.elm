@@ -1,4 +1,10 @@
-module ZERO.Interpreter exposing (Error(..), Value(..), run)
+module ZERO.Interpreter exposing
+    ( Error(..)
+    , RuntimeError(..)
+    , Type(..)
+    , Value(..)
+    , run
+    )
 
 import ZERO.AST as AST exposing (..)
 import ZERO.Parser as P
