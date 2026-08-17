@@ -1,15 +1,15 @@
 # ZERO
 
-A tiny interpreter in Elm that adds the `zero?` predicate, Boolean values, and runtime type errors.
+A tiny interpreter in Elm that adds the `zero?` predicate and shows how Boolean values introduce runtime type errors.
 
-ZERO builds on [DIFF](https://github.com/tinyinterpreters/diff), where expressions first became recursive. Adding a Boolean-producing expression removes the assumption that every expression evaluates to a number and requires operations to check the values they receive.
+ZERO builds on [DIFF](https://github.com/tinyinterpreters/diff), where every expression evaluated to a number. With `zero?`, expressions can now produce either numbers or Booleans, so operations must check whether the values they receive are suitable for them.
 
 Read [ZERO: Adding Booleans and Runtime Type Errors to a Tiny Interpreter in Elm](https://blog.tinyinterpreters.dev/posts/zero) for a guided explanation of how it works.
 
 ```mermaid
 flowchart TD
     A["zero?(-(1, 1))"] -->|parse| B["Program (Zero (Diff (Const 1) (Const 1)))"]
-    B -->|runProgram| C["VBool True"]
+    B -->|evaluate| C["VBool True"]
 ```
 
 ## Usage
@@ -19,52 +19,56 @@ You’ll need [Nix](https://zero-to-nix.com/start/install/) with flakes enabled.
 Enter the development environment and start the Elm REPL:
 
 ```bash
-$ nix develop
-$ elm repl
+nix develop
+elm repl
 ```
 
-Import the interpreter and run a program:
+Then run the interpreter:
 
 ```elm
-> import ZERO.Interpreter as I
-> I.run "zero?(-(1, 1))"
-```
+import ZERO.Interpreter as I
 
-The program evaluates the difference expression first and then tests whether its result is zero. It succeeds with:
-
-```elm
-Ok (VBool True)
+I.run "zero?(-(1, 1))"
+-- Ok (VBool True)
 ```
 
 ## Language
 
-ZERO supports non-negative integer constants:
+ZERO supports the constant and difference expressions from DIFF:
 
 ```txt
 123
 ```
 
-difference expressions:
-
 ```txt
 -(456, 123)
 ```
 
-and the `zero?` predicate:
+and adds the `zero?` predicate:
+
+```txt
+zero?(0)
+```
 
 ```txt
 zero?(-(1, 1))
 ```
 
-The `zero?` predicate evaluates its operand and produces:
+`zero?` evaluates its operand and produces a Boolean:
 
-* `VBool True` when the result is the number `0`
-* `VBool False` when the result is any other number
-* a runtime type error when the result is not a number
+```txt
+zero?(0)
+→ true
+
+zero?(1)
+→ false
+```
+
+Booleans can be produced by evaluation, but ZERO has no Boolean literals. `true` and `false` cannot be written directly as programs.
 
 ## Runtime errors
 
-The grammar permits any expression as an operand, but operations still require particular kinds of values.
+Before ZERO, every expression evaluated to a number. Adding Boolean values means an operation can now receive a kind of value it doesn't know how to use.
 
 For example:
 
@@ -72,8 +76,27 @@ For example:
 zero?(zero?(0))
 ```
 
-is valid syntax. However, the inner `zero?` produces a Boolean while the outer `zero?` requires a number, so evaluation fails with a runtime type error.
+The inner `zero?` produces a Boolean, but the outer `zero?` expects a number.
+
+Similarly:
+
+```txt
+-(zero?(0), 1)
+```
+
+produces a Boolean where difference expects a number.
+
+These programs are syntactically valid, but evaluation fails with a runtime type error.
+
+ZERO represents runtime type errors with the types an operation expected and the types it actually received:
+
+```elm
+TypeError
+    { expected = [ TNumber ]
+    , actual = [ TBool ]
+    }
+```
 
 ## Tiny Interpreters
 
-ZERO is part of [Tiny Interpreters](https://blog.tinyinterpreters.dev), a blog about learning how programming languages work by building small interpreters in Elm.
+ZERO is part of [Tiny Interpreters](https://blog.tinyinterpreters.dev), where we learn how programming languages work by building tiny interpreters.
