@@ -11,15 +11,27 @@ Program  ::= Expr
 ![Expr](diagram/Expr.svg)
 
 ```
-Expr     ::= Const
+Expr     ::= NExpr
+           | BExpr
+```
+
+referenced by:
+
+* Program
+
+**NExpr:**
+
+![NExpr](diagram/NExpr.svg)
+
+```
+NExpr    ::= Const
            | Diff
-           | Zero
 ```
 
 referenced by:
 
 * Diff
-* Program
+* Expr
 * Zero
 
 **Const:**
@@ -32,14 +44,26 @@ Const    ::= Number
 
 referenced by:
 
-* Expr
+* NExpr
 
 **Diff:**
 
 ![Diff](diagram/Diff.svg)
 
 ```
-Diff     ::= '-' '(' Expr ',' Expr ')'
+Diff     ::= '-' '(' NExpr ',' NExpr ')'
+```
+
+referenced by:
+
+* NExpr
+
+**BExpr:**
+
+![BExpr](diagram/BExpr.svg)
+
+```
+BExpr    ::= Zero
 ```
 
 referenced by:
@@ -51,12 +75,12 @@ referenced by:
 ![Zero](diagram/Zero.svg)
 
 ```
-Zero     ::= 'zero?' '(' Expr ')'
+Zero     ::= 'zero?' '(' NExpr ')'
 ```
 
 referenced by:
 
-* Expr
+* BExpr
 
 **Number:**
 

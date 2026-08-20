@@ -1,10 +1,12 @@
 Program ::= Expr
-Expr    ::= Const
+Expr    ::= NExpr
+          | BExpr
+NExpr   ::= Const
           | Diff
-          | Zero
 Const   ::= Number
-Diff    ::= '-' '(' Expr ',' Expr ')'
-Zero    ::= 'zero?' '(' Expr ')'
+Diff    ::= '-' '(' NExpr ',' NExpr ')'
+BExpr   ::= Zero
+Zero    ::= 'zero?' '(' NExpr ')'
 Number  ::= [0-9]+
 
 /* Use https://www.bottlecaps.de/rr/ui to view it as a Railroad Diagram. */
