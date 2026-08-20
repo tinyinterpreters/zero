@@ -32,25 +32,13 @@ suite =
                   , SucceedsWith (VNumber 3)
                   )
                 , ( "-(zero?(0), 1)"
-                  , RuntimeError <|
-                        I.TypeError
-                            { expected = [ I.TNumber, I.TNumber ]
-                            , actual = [ I.TBool, I.TNumber ]
-                            }
+                  , SyntaxError
                   )
                 , ( "-(0, zero?(1))"
-                  , RuntimeError <|
-                        I.TypeError
-                            { expected = [ I.TNumber, I.TNumber ]
-                            , actual = [ I.TNumber, I.TBool ]
-                            }
+                  , SyntaxError
                   )
                 , ( "-(zero?(0), zero?(1))"
-                  , RuntimeError <|
-                        I.TypeError
-                            { expected = [ I.TNumber, I.TNumber ]
-                            , actual = [ I.TBool, I.TBool ]
-                            }
+                  , SyntaxError
                   )
 
                 -- Is it zero?
@@ -66,11 +54,7 @@ suite =
                   , SucceedsWith (VBool False)
                   )
                 , ( "zero?(zero?(0))"
-                  , RuntimeError <|
-                        I.TypeError
-                            { expected = [ I.TNumber ]
-                            , actual = [ I.TBool ]
-                            }
+                  , SyntaxError
                   )
                 ]
         ]
