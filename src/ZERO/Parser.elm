@@ -25,13 +25,21 @@ program =
 expr : Parser Expr
 expr =
     P.oneOf
-        [ constExpr
-        , diffExpr
-        , zeroExpr
+        [ P.map NExpr constExpr
+        , P.map NExpr diffExpr
+        , P.map BExpr zeroExpr
         ]
 
 
-constExpr : Parser Expr
+nExpr : Parser NExpr
+nExpr =
+    P.oneOf
+        [ constExpr
+        , diffExpr
+        ]
+
+
+constExpr : Parser NExpr
 constExpr =
     P.map Const number
 
@@ -41,15 +49,7 @@ number =
     L.digits
 
 
-nExpr : Parser Expr
-nExpr =
-    P.oneOf
-        [ constExpr
-        , diffExpr
-        ]
-
-
-diffExpr : Parser Expr
+diffExpr : Parser NExpr
 diffExpr =
     P.succeed Diff
         |. L.symbol "-"
@@ -60,7 +60,7 @@ diffExpr =
         |. L.symbol ")"
 
 
-zeroExpr : Parser Expr
+zeroExpr : Parser BExpr
 zeroExpr =
     P.succeed Zero
         |. L.keyword "zero?"

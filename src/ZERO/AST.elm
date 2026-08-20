@@ -1,5 +1,7 @@
 module ZERO.AST exposing
-    ( Expr(..)
+    ( BExpr(..)
+    , Expr(..)
+    , NExpr(..)
     , Number
     , Program(..)
     )
@@ -10,9 +12,17 @@ type Program
 
 
 type Expr
+    = NExpr NExpr
+    | BExpr BExpr
+
+
+type NExpr
     = Const Number
-    | Diff Expr Expr
-    | Zero Expr
+    | Diff NExpr NExpr
+
+
+type BExpr
+    = Zero NExpr
 
 
 type alias Number =
