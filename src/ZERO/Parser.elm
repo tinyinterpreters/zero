@@ -41,14 +41,22 @@ number =
     L.digits
 
 
+nExpr : Parser Expr
+nExpr =
+    P.oneOf
+        [ constExpr
+        , diffExpr
+        ]
+
+
 diffExpr : Parser Expr
 diffExpr =
     P.succeed Diff
         |. L.symbol "-"
         |. L.symbol "("
-        |= P.lazy (\_ -> expr)
+        |= P.lazy (\_ -> nExpr)
         |. L.symbol ","
-        |= P.lazy (\_ -> expr)
+        |= P.lazy (\_ -> nExpr)
         |. L.symbol ")"
 
 
@@ -57,5 +65,5 @@ zeroExpr =
     P.succeed Zero
         |. L.keyword "zero?"
         |. L.symbol "("
-        |= P.lazy (\_ -> expr)
+        |= P.lazy (\_ -> nExpr)
         |. L.symbol ")"
