@@ -1,7 +1,7 @@
 module Test.ZERO.Interpreter exposing (suite)
 
-import Expect
 import Test exposing (Test, describe, test)
+import Test.Lib exposing (testValue)
 import ZERO.Interpreter as I exposing (Value(..))
 
 
@@ -9,41 +9,41 @@ suite : Test
 suite =
     describe "ZERO.Interpreter"
         [ describe "run" <|
-            List.map (testRun I.run)
+            List.map (testValue I.run)
                 -- Constant expressions
-                [ ( "123", SucceedsWith (VNumber 123) )
-                , ( "123 ", SucceedsWith (VNumber 123) )
-                , ( "123  ", SucceedsWith (VNumber 123) )
-                , ( " 123", SucceedsWith (VNumber 123) )
-                , ( "  123", SucceedsWith (VNumber 123) )
-                , ( "123abc", SyntaxError )
-                , ( "onetwothree", SyntaxError )
+                [ ( "123", Just (VNumber 123) )
+                , ( "123 ", Just (VNumber 123) )
+                , ( "123  ", Just (VNumber 123) )
+                , ( " 123", Just (VNumber 123) )
+                , ( "  123", Just (VNumber 123) )
+                , ( "123abc", Nothing )
+                , ( "onetwothree", Nothing )
 
                 -- Difference expressions
-                , ( "-(456,123)", SucceedsWith (VNumber 333) )
-                , ( "-(456, 123)", SucceedsWith (VNumber 333) )
-                , ( "- ( 2, -( 4, 3 ) )", SucceedsWith (VNumber 1) )
+                , ( "-(456,123)", Just (VNumber 333) )
+                , ( "-(456, 123)", Just (VNumber 333) )
+                , ( "- ( 2, -( 4, 3 ) )", Just (VNumber 1) )
                 , ( """
                     -(
                         -(5 , 3),
                         -(0 , 1)
                     )
                     """
-                  , SucceedsWith (VNumber 3)
+                  , Just (VNumber 3)
                   )
                 , ( "-(zero?(0), 1)"
-                  , SyntaxError
+                  , Nothing
                   )
                 , ( "-(0, zero?(1))"
-                  , SyntaxError
+                  , Nothing
                   )
                 , ( "-(zero?(0), zero?(1))"
-                  , SyntaxError
+                  , Nothing
                   )
 
                 -- Is it zero?
-                , ( "zero?(0)", SucceedsWith (VBool True) )
-                , ( "zero?( 0 ) ", SucceedsWith (VBool True) )
+                , ( "zero?(0)", Just (VBool True) )
+                , ( "zero?( 0 ) ", Just (VBool True) )
                 , ( """
                     zero?(
                         -( 0
@@ -51,54 +51,10 @@ suite =
                          )
                     )
                     """
-                  , SucceedsWith (VBool False)
+                  , Just (VBool False)
                   )
                 , ( "zero?(zero?(0))"
-                  , SyntaxError
+                  , Nothing
                   )
                 ]
         ]
-
-
-type Expected a
-    = SucceedsWith a
-    | SyntaxError
-    | RuntimeError I.RuntimeError
-
-
-testRun : (String -> Result I.Error a) -> ( String, Expected a ) -> Test
-testRun f ( input, expectedOutput ) =
-    test (Debug.toString input) <|
-        \_ ->
-            case ( f input, expectedOutput ) of
-                ( Ok actual, SucceedsWith expected ) ->
-                    if actual == expected then
-                        Expect.pass
-
-                    else
-                        Expect.fail <|
-                            Debug.toString
-                                { expected = expected
-                                , actual = actual
-                                }
-
-                ( Err (I.SyntaxError _), SyntaxError ) ->
-                    Expect.pass
-
-                ( Err (I.RuntimeError actual), RuntimeError expected ) ->
-                    if actual == expected then
-                        Expect.pass
-
-                    else
-                        Expect.fail <|
-                            Debug.toString
-                                { expected = expected
-                                , actual = actual
-                                }
-
-                ( actual, expected ) ->
-                    Expect.fail <|
-                        Debug.toString
-                            { expected = expected
-                            , actual = actual
-                            }
