@@ -10,10 +10,10 @@ zero?(0)
 
 ```txt
 zero?(0)
-→ true
+-> true
 
 zero?(1)
-→ false
+-> false
 ```
 
 Once expressions can produce both numbers and Booleans, an operation can receive a value of the wrong type:
@@ -26,7 +26,9 @@ The inner `zero?` produces a Boolean, but the outer `zero?` expects a number. ZE
 
 For a closer look, read [ZERO: Boolean Values and Runtime Type Errors](https://blog.tinyinterpreters.dev/posts/zero/).
 
-To try it, you'll need [Nix](https://zero-to-nix.com/start/install/) with flakes enabled.
+## Try it
+
+You'll need [Nix](https://nixos.org/) with flakes enabled.
 
 ```bash
 nix develop
